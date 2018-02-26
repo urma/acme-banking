@@ -1,0 +1,20 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    title ACME Internet Banking || #{title}
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css', integrity='sha256-Ll4Z8mX5+0pGybXIES6J8YjUZUBFcQsJfS00wbXdbG8=', crossorigin='anonymous')
+    script(src='https://use.fontawesome.com/releases/v5.0.0/js/all.js')
+  body
+    section(class='hero is-dark')
+      div(class='hero-body')
+        div(class='container')
+          div(class='title') ACME Internet Banking
+          div(class='subtitle') All your BTC are belong to us
+    section(class='section')
+      div(class='container')
+        block content
+    footer(class='footer')
+      div(class='container')
+        block footer

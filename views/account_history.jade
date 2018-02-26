@@ -1,0 +1,36 @@
+extends layout
+
+block content
+  div(class='columns')
+    div(class='column is-one-quarter')
+      aside(class='menu')
+        p(class='menu-label') Transactions
+        ul(class='menu-list')
+          li #[a(href='/balance') Balance]
+          li #[a(href='/deposit') Deposit]
+          li #[a(href='/withdraw') Withdraw]
+          li #[a(href='/history', class='is-active') Transaction History]
+        p(class='menu-label') Account
+        ul(class='menu-list')
+          li #[a(href='account') Account Settings]
+          li #[a(href='personal') Personal Information]
+          li #[a(href='logout') Logout]
+    div(class='column')
+      div(class='content')
+        h1= account.accountNumber
+        table
+          thead
+            tr
+              th Timestamp
+              th Transaction
+              th Amount
+          tbody
+            each transaction in transactions
+              tr
+                td= transaction.timestamp
+                td= transaction.operation
+                td= transaction.amount
+
+block footer
+  div(class='content has-text-centered')
+    small You are logged in as <strong>#{user.email}</strong> || Copyright &copy; 2018 ACME Banking Corp.

@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  if error
+    div(class='notification is-danger')
+      button(class='delete')
+      | #{error}
+  form(method='post')
+    div(class='field')
+      label(class='label') Email
+      p(class='control has-icons-left')
+        input(type='email', class='input', name='email', placeholder='Email')
+        span(class='icon is-small is-left')
+          i(class='fas fa-envelope')
+    div(class='field')
+      label(class='label') Password
+      p(class='control has-icons-left')
+        input(type='password', class='input', name='password')
+        span(class='icon is-small is-left')
+          i(class='fas fa-lock')
+    div(class='field')
+      input(type='submit', class='button is-success')

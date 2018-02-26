@@ -1,0 +1,41 @@
+extends layout
+
+block content
+  div(class='columns')
+    div(class='column is-one-quarter')
+      aside(class='menu')
+        p(class='menu-label') Transactions
+        ul(class='menu-list')
+          li #[a(href='/balance') Balance]
+          li #[a(href='/deposit') Deposit]
+          li #[a(href='/withdraw', class='is-active') Withdraw]
+          li #[a(href='/history') Transaction History]
+        p(class='menu-label') Account
+        ul(class='menu-list')
+          li #[a(href='account') Account Settings]
+          li #[a(href='personal') Personal Information]
+          li #[a(href='logout') Logout]
+    div(class='column')
+      if error
+        div(class='notification is-danger')
+          button(class='delete')
+          | #{error}
+      form(method='post')
+        div(class='field')
+          label(class='label') Account
+          div(class='select')
+            select(name='account')
+              each account in accounts
+                option(value=account._id)= account.accountNumber
+        div(class='field')
+          label(class='label') Amount
+          p(class='control has-icons-left')
+            input(type='text', class='input', name='amount')
+            span(class='icon is-small is-left')
+              i(class='fas fa-dollar-sign')
+        div(class='field')
+          input(type='submit', class='button is-success', value='Deposit')
+
+block footer
+  div(class='content has-text-centered')
+    small You are logged in as <strong>#{user.email}</strong> || Copyright &copy; 2018 ACME Banking Corp.
