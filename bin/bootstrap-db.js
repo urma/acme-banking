@@ -18,8 +18,8 @@ db.insert(userData, function(err, user) {
   for (var i = 0; i < 1 + Math.round(7 * Math.random()); i++) {
     var accountData = {
       model: 'account',
-      accountNumber: Math.round(0xffffffff * Math.random()),
-      balance: 200.0 * Math.random(),
+      accountNumber: Math.round(0xffffff * Math.random()),
+      balance: Math.round(20000.0 * Math.random()) / 100.0,
       userId: user._id,
     };
     db.insert(accountData, function(err, account) {

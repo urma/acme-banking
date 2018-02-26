@@ -16,17 +16,19 @@ block content
           li #[a(href='/personal') Personal Information]
           li #[a(href='/logout') Logout]
     div(class='column')
-      table
-        thead
-          tr
-            th Account
-            th Balance
-        tbody
-          each account in accounts
+      div(class='content')
+        p Please select the account to check transaction history:
+        table(class='table')
+          thead
             tr
-              td
-                a(href='/history/' + account._id)= account.accountNumber
-              td= account.balance
+              th Account
+              th Balance
+          tbody
+            each account in accounts
+              tr
+                td
+                  a(href='/history/' + account._id)= account.accountNumber
+                td $ #{account.balance}
 
 block footer
   div(class='content has-text-centered')
