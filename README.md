@@ -41,7 +41,8 @@ $ docker run -d -p 127.0.0.1:3000:3000 acme-banking:latest
 ```
 
 Running `docker` with the `-p 127.0.0.1:3000:3000` parameter
-binds the listening socket to `localhost`, preventing exposure,
-If you are sure you want to expose the application to external
-users, just remove the `127.0.0.1` and it should be accessible
-via any external interfaces on the Docker host.
+binds the listening socket to `localhost` to prevent
+accidental exposure. If you are sure you want to expose the
+application to external users, just remove the `127.0.0.1` and
+it should be accessible via any external interfaces on the
+Docker host.
