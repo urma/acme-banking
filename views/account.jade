@@ -8,34 +8,36 @@ block content
         ul(class='menu-list')
           li #[a(href='/balance') Balance]
           li #[a(href='/deposit') Deposit]
-          li #[a(href='/withdraw', class='is-active') Withdraw]
+          li #[a(href='/withdraw') Withdraw]
           li #[a(href='/history') Transaction History]
         p(class='menu-label') Account
         ul(class='menu-list')
-          li #[a(href='/account') Account Settings]
+          li #[a(href='/account', class='is-active') Account Settings]
           li #[a(href='/personal') Personal Information]
           li #[a(href='/logout') Logout]
     div(class='column')
       div(class='content')
+        h1 Change Password
         if error
           div(class='notification is-danger')
             button(class='delete')
             | #{error}
+        else if success
+          div(class='notification is-success')
+            button(class='delete')
+            | #{success}
         form(method='post')
           div(class='field')
-            label(class='label') Account
-            div(class='select')
-              select(name='account')
-                each account in accounts
-                  option(value=account._id)= account.accountNumber
+            label(class='label') Current Password
+            input(type='password', class='input', name='current')
           div(class='field')
-            label(class='label') Amount
-            p(class='control has-icons-left')
-              input(type='text', class='input', name='amount')
-              span(class='icon is-small is-left')
-                i(class='fas fa-dollar-sign')
+            label(class='label') New Password
+            input(type='password', class='input', name='new')
           div(class='field')
-            input(type='submit', class='button is-success', value='Deposit')
+            label(class='label') Confirm Password
+            input(type='password', class='input', name='confirm')
+          div(class='field')
+            input(type='submit', class='button is-success', value='Update')
 
 block footer
   div(class='content has-text-centered')

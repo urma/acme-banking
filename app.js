@@ -1,12 +1,12 @@
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+var crypto = require('crypto');
 var express = require('express');
-var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var session = require('express-session');
 var nedb = require('nedb');
-var crypto = require('crypto');
+var path = require('path');
+var session = require('express-session');
 
 var index = require('./routes/index');
 
@@ -55,6 +55,7 @@ app.use(function(req, res, next) {
 });
 
 // error handler
+// eslint-disable-next-line no-unused-vars
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;

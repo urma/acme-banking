@@ -16,21 +16,22 @@ block content
           li #[a(href='/personal') Personal Information]
           li #[a(href='/logout') Logout]
     div(class='column')
-      form(method='post')
-        div(class='field')
-          label(class='label') Account
-          div(class='select')
-            select(name='account')
-              each account in accounts
-                option(value=account._id)= account.accountNumber
-        div(class='field')
-          label(class='label') Amount
-          p(class='control has-icons-left')
-            input(type='text', class='input', name='amount')
-            span(class='icon is-small is-left')
-              i(class='fas fa-dollar-sign')
-        div(class='field')
-          input(type='submit', class='button is-success', value='Deposit')
+      div(class='content')
+        form(method='post')
+          div(class='field')
+            label(class='label') Account
+            div(class='select')
+              select(name='account')
+                each account in accounts
+                  option(value=account._id)= account.accountNumber
+          div(class='field')
+            label(class='label') Amount
+            p(class='control has-icons-left')
+              input(type='text', class='input', name='amount')
+              span(class='icon is-small is-left')
+                i(class='fas fa-dollar-sign')
+          div(class='field')
+            input(type='submit', class='button is-success', value='Deposit')
 
 block footer
   div(class='content has-text-centered')

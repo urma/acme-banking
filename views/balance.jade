@@ -16,11 +16,13 @@ block content
           li #[a(href='/personal') Personal Information]
           li #[a(href='/logout') Logout]
     div(class='column')
-      each account in accounts
-        div(class='box')
-          div(class='content')
-            h1 Account #{account.accountNumber}
-            p Balance: <strong>$#{account.balance}</strong>
+      div(class='content')
+        each account in accounts
+          div(class='box')
+            div(class='content')
+              h2
+                a(href='/history/' + account._id) Account #{account.accountNumber}
+              p Balance: <strong>$#{account.balance}</strong>
 
 block footer
   div(class='content has-text-centered')
