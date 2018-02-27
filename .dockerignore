@@ -1,0 +1,4 @@
+.sonarlint/
+node_modules/
+acme-banking.nedb
+.git
