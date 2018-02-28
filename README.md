@@ -1,4 +1,9 @@
 # ACME Banking
+
+[![snyk badge](https://snyk.io/test/github/urma/acme-banking/badge.svg)](https://snyk.io/test/github/urma/acme-banking)
+![travis badge](https://travis-ci.org/urma/acme-banking.svg?branch=master)
+![sonarcloud badge](https://sonarcloud.io/api/project_badges/measure?project=acme-banking&metric=alert_status)
+
 This application was developed to support application security
 training classes, and contains a number of vulnerabilities.
 **Do not run it while exposed to public networks.**
