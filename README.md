@@ -51,3 +51,8 @@ accidental exposure. If you are sure you want to expose the
 application to external users, just remove the `127.0.0.1` and
 it should be accessible via any external interfaces on the
 Docker host.
+
+### Sample Check for git-secrets
+
+AKIAIOSFODNN7EXAMPLD
+wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEZ
