@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "precommit": "git-secrets --scan && eslint $(pwd)"
+    "precommit": "eslint $(pwd)"
   },
   "dependencies": {
     "ajv": "^6.2.0",
