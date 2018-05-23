@@ -6,5 +6,10 @@ pipeline {
         sh 'npm install'
       }
     }
+    stage('Audit') {
+      steps {
+        sh 'npm audit'
+      }
+    }
   }
 }
