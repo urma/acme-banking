@@ -1,26 +1,35 @@
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
 const crypto = require('crypto');
 const express = require('express');
+const express_winston = require('express-winston');
 const favicon = require('serve-favicon');
-const logger = require('morgan');
 const path = require('path');
 const session = require('express-session');
-
-const index = require(path.resolve(__dirname, 'app/routes'));
+const winston = require('winston');
 
 const app = express();
 
+// main router definition
+app.use('/', require(path.resolve(__dirname, 'app/routes')));
+
+// logging setup
+app.locals.logger = new winston.Logger({
+  transports: [
+    new winston.transports.Console({ colorize: true, timestamp: true }),
+  ],
+});
+
+app.use(express_winston.logger({
+  winstonInstance: app.locals.logger,
+}));
+  
 // view engine setup
 app.set('views', path.resolve(__dirname, 'app/views'));
 app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 app.use(favicon(path.resolve(__dirname, 'app/public', 'favicon.ico')));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(express.json({ strict: true }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.resolve(__dirname, 'app/public')));
 
 // setup session middleware
@@ -37,8 +46,6 @@ app.use(function(req, res, next) {
   }
   return res.redirect('/login');
 });
-
-app.use('/', index);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
