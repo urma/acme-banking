@@ -1,34 +1,34 @@
-var bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser');
-var crypto = require('crypto');
-var express = require('express');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var nedb = require('nedb');
-var path = require('path');
-var session = require('express-session');
+const crypto = require('crypto');
+const express = require('express');
+const express_winston = require('express-winston');
+const favicon = require('serve-favicon');
+const path = require('path');
+const session = require('express-session');
+const winston = require('winston');
 
-var index = require('./routes/index');
+const app = express();
 
-var app = express();
-
-// setup database globally
-app.locals.db = new nedb({
-  filename: path.join(__dirname, 'acme-banking.nedb'),
-  autoload: true
+// logging setup
+app.locals.logger = new winston.Logger({
+  transports: [
+    new winston.transports.Console({ colorize: true, timestamp: true }),
+  ],
 });
 
+app.use(express_winston.logger({
+  winstonInstance: app.locals.logger,
+  colorize: true,
+}));
+  
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.resolve(__dirname, 'app/views'));
 app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(favicon(path.resolve(__dirname, 'app/public', 'favicon.ico')));
+app.use(express.json({ strict: true }));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.resolve(__dirname, 'app/public')));
 
 // setup session middleware
 app.use(session({
@@ -45,7 +45,11 @@ app.use(function(req, res, next) {
   return res.redirect('/login');
 });
 
-app.use('/', index);
+// database abstraction via sequelize
+app.locals.db = require(path.resolve(__dirname, 'app/models'));
+
+// main router definition
+app.use('/', require(path.resolve(__dirname, 'app/routes')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

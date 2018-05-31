@@ -1,0 +1,9 @@
+{
+  "database": {
+    "host": "DB_HOST",
+    "dialect": "mysql",
+    "instance": "DB_INSTANCE",
+    "username": "DB_USERNAME",
+    "password": "DB_PASSWORD"
+  }
+}
