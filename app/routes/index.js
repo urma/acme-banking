@@ -1,28 +1,9 @@
-var crypto = require('crypto');
-var express = require('express');
+const express = require('express');
+const path = require('path');
 
-var router = express.Router();
+const router = express.Router();
 
-function authenticate(db, username, password) {
-  return new Promise(function(resolve, reject) {
-    var matchCriteria = { model: 'user', email: username };
-    db.findOne(matchCriteria, function(err, user) {
-      if (err) { return reject(err); }
-
-      if (user) {
-        var hash = crypto.createHash('sha512');
-        hash.update(user.salt);
-        hash.update(password);
-
-        if (user.password === hash.digest('base64')) {
-          return resolve(user);
-        }
-      }
-      return reject({ message: 'Invalid username/password' });
-    });
-
-  });
-}
+const helpers = require(path.resolve(__dirname, '../helpers'));
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -34,124 +15,119 @@ router.get('/', function(req, res) {
 
 /* Transaction handlers */
 router.get('/balance', function(req, res) {
-  var matchCriteria = { model: 'account', userId: req.session.user._id };
-  req.app.locals.db.find(matchCriteria, function(err, accounts) {
-    if (err) { return res.status(400).send(err); }
+  req.app.locals.db.model('account').findAll({
+    where: { userId: req.session.user._id },
+    include: [{ model: req.app.locals.db.model('transaction') }],
+  }).then((accounts) => {
     res.render('balance', {
       title: 'Balance',
       accounts: accounts,
       user: req.session.user,
     });
+  }).catch((err) => {
+    return res.status(400).send(err);
+  });
+});
+
+router.get('/history', function(req, res) {
+  req.app.locals.db.model('account').findAll({
+    where: { userId: req.session.user._id },
+    include: [{ model: req.app.locals.db.model('transaction') }],
+  }).then((accounts) => {
+    res.render('history', {
+      title: 'Transaction History',
+      accounts: accounts,
+      user: req.session.user,
+    });
+  }).catch((err) => {
+    return res.status(400).send(err);
+  });
+});
+
+router.get('/history/:accountId', function(req, res) {
+  req.app.locals.db.model('account').findOne({
+    _id: req.params.accountId,
+    include: [{ model: req.app.locals.db.model('transaction') }],
+  }).then((account) => {
+    res.render('account_history', {
+      title: 'Transaction History',
+      account: account,
+      user: req.session.user,
+    });
+  }).catch((err) => {
+    return res.status(400).send(err);
   });
 });
 
 router.get('/deposit', function(req, res) {
-  var matchCriteria = { model: 'account', userId: req.session.user._id };
-  req.app.locals.db.find(matchCriteria, function(err, accounts) {
-    if (err) { return res.status(400).send(err); }
+  req.app.locals.db.model('account').findAll({
+    where: { userId: req.session.user._id },
+    include: [{ model: req.app.locals.db.model('transaction') }],
+  }).then((accounts) => {
     res.render('deposit', {
       title: 'Deposit',
       accounts: accounts,
       user: req.session.user,
     });
+  }).catch((err) => {
+    return res.status(400).send(err);
   });
 });
 
 router.post('/deposit', function(req, res) {
-  var matchCriteria = { model: 'account', _id: req.body.account };
-  req.app.locals.db.findOne(matchCriteria, function(err, account) {
-    if (err) { return res.status(400).send(err); }
-    var transaction = {
-      model: 'transaction',
-      operation: 'deposit',
+  req.app.locals.db.model('account').findOne({
+    _id: req.params.accountId,
+    include: [{ model: req.app.locals.db.model('transaction') }],
+  }).then((account) => {
+    req.app.locals.db.model('transaction').create({
       accountId: account._id,
-      amount: parseFloat(req.body.amount),
       timestamp: new Date(),
-    };
-    var updateOperation = {
-      $inc: { balance: transaction.amount },
-    };
-    req.app.locals.db.insert(transaction, function(err) {
-      if (err) { return res.status(400).send(err); }
-      req.app.locals.db.update(matchCriteria, updateOperation, function (err) {
-        if (err) { return res.status(400).send(err); }
-        res.redirect('/balance');
-      });
+      operation: 'deposit',
+      amount: parseFloat(req.body.amount),
+    }).then(() => {
+      res.redirect('/balance');
+    }).catch((err) => {
+      return res.status(400).send(err);
     });
+  }).catch((err) => {
+    return res.status(400).send(err);
   });
 });
 
 router.get('/withdraw', function(req, res) {
-  var matchCriteria = { model: 'account', userId: req.session.user._id };
-  req.app.locals.db.find(matchCriteria, function(err, accounts) {
-    if (err) { return res.status(400).send(err); }
+  req.app.locals.db.model('account').findAll({
+    where: { userId: req.session.user._id },
+    include: [{ model: req.app.locals.db.model('transaction') }],
+  }).then((accounts) => {
     res.render('withdraw', {
       title: 'Withdraw',
       accounts: accounts,
       user: req.session.user,
       error: req.query.error,
     });
+  }).catch((err) => {
+    return res.status(400).send(err);
   });
 });
 
 router.post('/withdraw', function(req, res) {
-  var matchCriteria = { model: 'account', _id: req.body.account };
-  req.app.locals.db.findOne(matchCriteria, function(err, account) {
-    if (err) { return res.status(400).send(err); }
-    var transaction = {
-      model: 'transaction',
-      operation: 'withdraw',
+  req.app.locals.db.model('account').findOne({
+    _id: req.params.accountId,
+    include: [{ model: req.app.locals.db.model('transaction') }],
+  }).then((account) => {
+    req.app.locals.db.model('transaction').create({
       accountId: account._id,
-      amount: parseFloat(req.body.amount),
       timestamp: new Date(),
-    };
-    var updateOperation = {
-      $inc: { balance: -1.0 * transaction.amount },
-    };
-
-    if (account.balance < transaction.amount) {
-      return res.redirect('/withdraw?error=Insufficient+funds');
-    }
-
-    req.app.locals.db.insert(transaction, function(err) {
-      if (err) { return res.status(400).send(err); }
-      req.app.locals.db.update(matchCriteria, updateOperation, function (err) {
-        if (err) { return res.status(400).send(err); }
-        res.redirect('/balance');
-      });
+      operation: 'withdrawal',
+      amount: parseFloat(req.body.amount),
+    }).then(() => {
+      res.redirect('/balance');
+    }).catch((err) => {
+      return res.status(400).send(err);
     });
   });
 });
 
-router.get('/history', function(req, res) {
-  var matchCriteria = { model: 'account', userId: req.session.user._id };
-  req.app.locals.db.find(matchCriteria, function(err, accounts) {
-    if (err) { return res.status(400).send(err); }
-    res.render('history', {
-      title: 'Transaction History',
-      accounts: accounts,
-      user: req.session.user,
-    });
-  });
-});
-
-router.get('/history/:accountId', function(req, res) {
-  var accountCriteria = { model: 'account', _id: req.params.accountId };
-  req.app.locals.db.findOne(accountCriteria, function(err, account) {
-    if (err) { return res.status(400).send(err); }
-    var transactionCriteria = { model: 'transaction', accountId: account._id };
-
-    req.app.locals.db.find(transactionCriteria).sort({ timestamp: -1 }).exec(function(err, transactions) {
-      if (err) { return res.status(400).send(err); }
-      res.render('account_history', {
-        title: 'Transaction History',
-        account: account,
-        transactions: transactions,
-        user: req.session.user,
-      });
-    });
-  });
-});
 
 /* login form */
 router.get('/login', function(req, res) {
@@ -160,14 +136,14 @@ router.get('/login', function(req, res) {
 
 /* login submission */
 router.post('/login', function(req, res) {
-  authenticate(req.app.locals.db, req.body.email, req.body.password).then(function(user) {
+  helpers.auth.authenticate(req.body.email, req.body.password).then((user) => {
     req.session.user = user;
     return res.redirect('/');
-  }).catch(function(err) {
+  }).catch((err) => {
     delete(req.session.user);
     res.render('login', {
       title: 'Log In',
-      error: err.message,
+      error: err,
     });
   });
 });
@@ -180,7 +156,7 @@ router.get('/account', function (req, res) {
 });
 
 router.post('/account', function(req, res) {
-  authenticate(req.app.locals.db, req.session.user.email, req.body.current).then(function(user) {
+  helpers.auth.authenticate(req.session.user.email, req.body.current).then((user) => {
     if (req.body.new !== req.body.confirm) {
       return res.render('account', {
         title: 'Account Settings',
@@ -189,39 +165,25 @@ router.post('/account', function(req, res) {
       });
     }
 
-    var hash = crypto.createHash('sha512');
-    user.salt = Buffer.from(crypto.randomBytes(32)).toString('base64');
-    hash.update(user.salt);
-    hash.update(req.body.new);
-    user.password = hash.digest('base64');
-
-    var userCriteria = { model: 'user', _id: user._id };
-    var userUpdate = {
-      $set: {
-        salt: user.salt,
-        password: user.password,
-      }
-    };
-
-    req.app.locals.db.update(userCriteria, userUpdate, function(err) {
-      if (err) {
-        return res.render('account', {
-          title: 'Account Settings',
-          user: req.session.user,
-          error: err,
-        });
-      }
+    user.password = req.body.new;
+    return user.save().then(() => {
       return res.render('account', {
         title: 'Account Settings',
         user: req.session.user,
         success: 'Password was updated successfully',
       });
+    }).catch((err) => {
+      return res.render('account', {
+        title: 'Account Settings',
+        user: req.session.user,
+        error: err,
+      });
     });
-  }).catch(function(err) {
+  }).catch((err) => {
     return res.render('account', {
       title: 'Account Settings',
       user: req.session.user,
-      error: err.message,
+      error: err,
     });
   });
 });

@@ -8,9 +8,6 @@ const winston = require('winston');
 
 const app = express();
 
-// main router definition
-app.use('/', require(path.resolve(__dirname, 'app/routes')));
-
 // logging setup
 app.locals.logger = new winston.Logger({
   transports: [
@@ -20,6 +17,7 @@ app.locals.logger = new winston.Logger({
 
 app.use(express_winston.logger({
   winstonInstance: app.locals.logger,
+  colorize: true,
 }));
   
 // view engine setup
@@ -46,6 +44,12 @@ app.use(function(req, res, next) {
   }
   return res.redirect('/login');
 });
+
+// database abstraction via sequelize
+app.locals.db = require(path.resolve(__dirname, 'app/models'));
+
+// main router definition
+app.use('/', require(path.resolve(__dirname, 'app/routes')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
