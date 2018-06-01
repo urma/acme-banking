@@ -1,16 +1,28 @@
 /* eslint no-console: 0 */
 'use strict';
 
+const getopt = require('node-getopt');
 const path = require('path');
 
 const models = require(path.resolve(__dirname, '../app/models'));
 
+const args = getopt.create([
+  [ 'u', 'username=ARG', 'Username for initial user for application' ],
+  [ 'e', 'email=ARG',    'Email for initial user for application' ],
+  [ 'p', 'password=ARG', 'Password for initial user for application' ],
+]).bindHelp().parseSystem();
+
+if (!args.options.username || !args.options.email || !args.options.password) {
+  args.showHelp();
+  process.exit(1);
+}
+
 models.sync({ force: true }).then((db) => {
   /* Create user and accounts */
   const userData = {
-    username: 'ulisses.albuquerque',
-    email: 'ulisses.albuquerque@securusglobal.com',
-    password: 'password',
+    username: args.options.username,
+    email: args.options.email,
+    password: args.options.password,
     accounts: Array.from({ length: 3 + Math.round(8 * Math.random()) }, () => {
       return {
         accountNumber: `${Math.round(1000 + 9000 * Math.random())}-${Math.round(0xffff * Math.random())}`,
