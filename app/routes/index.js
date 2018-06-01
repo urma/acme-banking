@@ -46,7 +46,7 @@ router.get('/history', function(req, res) {
 
 router.get('/history/:accountId', function(req, res) {
   req.app.locals.db.model('account').findOne({
-    _id: req.params.accountId,
+    where: { _id: req.params.accountId },
     include: [{ model: req.app.locals.db.model('transaction') }],
   }).then((account) => {
     res.render('account_history', {
@@ -76,7 +76,7 @@ router.get('/deposit', function(req, res) {
 
 router.post('/deposit', function(req, res) {
   req.app.locals.db.model('account').findOne({
-    _id: req.params.accountId,
+    where: { _id: req.body.account },
     include: [{ model: req.app.locals.db.model('transaction') }],
   }).then((account) => {
     req.app.locals.db.model('transaction').create({
@@ -112,7 +112,7 @@ router.get('/withdraw', function(req, res) {
 
 router.post('/withdraw', function(req, res) {
   req.app.locals.db.model('account').findOne({
-    _id: req.params.accountId,
+    where: { _id: req.body.account },
     include: [{ model: req.app.locals.db.model('transaction') }],
   }).then((account) => {
     req.app.locals.db.model('transaction').create({
@@ -127,7 +127,6 @@ router.post('/withdraw', function(req, res) {
     });
   });
 });
-
 
 /* login form */
 router.get('/login', function(req, res) {
