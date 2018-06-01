@@ -1,0 +1,24 @@
+version: '3.2'
+
+services:
+  webapp:
+    image: acme-banking:latest
+    environment:
+      - DB_HOST=database
+      - DB_INSTANCE=acmedb
+      - DB_USERNAME=acme
+      - DB_PASSWORD
+    ports:
+      - 3000:3000
+  database:
+    image: mysql:5
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=acmedb
+      - MYSQL_USER=acme
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - mysql:/var/lib/mysql
+
+volumes:
+  mysql:

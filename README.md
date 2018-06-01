@@ -10,29 +10,23 @@ training classes, and contains a number of vulnerabilities.
 
 ## Instructions
 
-### Database Setup
-The application uses [nedb](https://github.com/louischatriot/nedb)
-for persistence, and the database needs to be created and populated
-before the application can be used, as the initial user is created
-during this process.
-
-This can be done via the `bin/bootstrap-db.js` script:
-```
-$ node bin/bootstrap-db.js
-```
-
-The default credentials are:
-
-* Username: `user@domain.com`
-* Password `password`
-
 ### Running Locally
 The application can be started locally with debug information
 by running:
 ```
 $ DEBUG=acme-banking:* npm start
 ```
-The application can then the accessed through
+
+It requires access to a MySQL database. Database credentials can be configured
+using `node-config` by changing the various JSON files under `config/`, depending
+on the environment being used (`dev`, `test` or `production`). The parameters
+can also be provided via environment variables:
+* `DB_HOST` is the host running MySQL
+* `DB_INSTANCE` is the database instance in MySQL
+* `DB_USERNAME` is the database user for authentication
+* `DB_PASSWORD` is the database password for authentication
+
+Once running the application can then the accessed through
 http://localhost:3000/
 
 ### Running via Docker
