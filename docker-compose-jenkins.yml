@@ -2,7 +2,7 @@ version: '3.2'
 
 services:
   webapp:
-    image: acme-banking:latest
+    image: 127.0.0.1:5000:acme-banking:latest
     environment:
       - DB_HOST=database
       - DB_INSTANCE=acmedb
@@ -17,6 +17,6 @@ services:
       - MYSQL_DATABASE=acmedb
       - MYSQL_USER=acme
       - MYSQL_PASSWORD=${DB_PASSWORD}
-  zap:
-    image: owasp/zap2docker-stable:latest
-    command: zap.sh -daemon -host 0.0.0.0 -port 8080 -config api.addrs.addr.name=.* -config api.addrs.addr.regex=true
+
+volumes:
+  owaspzap:

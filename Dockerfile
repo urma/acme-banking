@@ -8,7 +8,7 @@ EXPOSE 3000/tcp
 
 COPY --chown=node:node [ ".", "/home/node/" ]
 
-RUN npm install --production
+RUN npm install --only=production
 
 # HACK: Aqua microscanner needs to be run as root
 USER root
