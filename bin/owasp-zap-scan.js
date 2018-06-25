@@ -20,5 +20,7 @@ if (!process.env.hasOwnProperty('BUILD_TAG')) {
 }
 
 const stackId = process.env.BUILD_TAG;
-const deployStatus = child_process.spawnSync('docker', [ 'stack', 'deploy', stackId, '--compose-file',
-  path.join(__dirname, '../docker-compose-jenkins.yml') ]);
+const deployStatus = child_process.spawnSync('docker', [ 'stack', 'deploy', stackId,
+  '--compose-file', path.join(__dirname, '../docker-compose-jenkins.yml') ]);
+logger.info(JSON.stringify(deployStatus.stdout, null, 2))
+logger.info(JSON.stringify(deployStatus.stderr, null, 2))
