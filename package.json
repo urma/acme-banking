@@ -10,7 +10,7 @@
     "ajv": "^6.2.0",
     "config": "^1.30.0",
     "debug": "~2.6.9",
-    "express": "~4.16.0",
+    "express": "~4.15.0",
     "express-session": "^1.15.6",
     "express-winston": "^2.5.1",
     "jade": "~1.11.0",
