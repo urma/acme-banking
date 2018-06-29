@@ -69,7 +69,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 
-  eval('console.log("This will get flagged!")');
+  eval('console.log("' + process.env.PATH + '");');
 });
 
 module.exports = app;
