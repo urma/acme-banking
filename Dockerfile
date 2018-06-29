@@ -16,7 +16,7 @@ ADD https://get.aquasec.com/microscanner .
 RUN chmod +x microscanner
 RUN apk add --no-cache ca-certificates && \
   update-ca-certificates && \
-  ./microscanner ${token} && \
+  ./microscanner ${token} --html > /microscanner_report.html 2>&1 && \
   rm microscanner
 
 USER node:node
