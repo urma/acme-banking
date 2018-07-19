@@ -8,27 +8,27 @@ pipeline {
   stages {
     stage('ESLint'){
         steps{
-            sh '${WORKSPACE}/bin/eslint.sh'
+            sh '/bin/sh ${WORKSPACE}/bin/eslint.sh'
         }
     }
     stage('Build'){
         steps{
-            sh '${WORKSPACE}/bin/npm.sh'
+            sh '/bin/sh ${WORKSPACE}/bin/npm.sh'
         }
     }
     stage('Docker Image'){
         steps{
-            sh '${WORKSPACE}/bin/dockerimage.sh'
+            sh '/bin/sh ${WORKSPACE}/bin/dockerimage.sh'
         }
     }
     stage('Docker Clean-up'){
         steps{
-            sh '${WORKSPACE}/bin/dockercleanup.sh'
+            sh '/bin/sh ${WORKSPACE}/bin/dockercleanup.sh'
         }
     }
     stage ('Docker Deploy & Zap Scan'){
         steps{
-            sh '${WORKSPACE}/bin/zapscan.sh'
+            sh '/bin/sh ${WORKSPACE}/bin/zapscan.sh'
         }
     }
   }
