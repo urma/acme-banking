@@ -1,4 +1,4 @@
 #!/bin/bash
 
 npm install 
-npm audit fix
+#npm audit fix
