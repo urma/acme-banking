@@ -17,5 +17,7 @@ docker push "${IMAGE_ALIAS}"
 docker rmi "${IMAGE_NAME}"
 docker rmi "${IMAGE_ALIAS}"
 
+docker service ls
+docker service rm "jenkins-acme-banking-103_webapp"
 # Sleep FFS
 sleep 10
