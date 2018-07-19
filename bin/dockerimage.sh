@@ -16,3 +16,6 @@ docker push "${IMAGE_ALIAS}"
 
 docker rmi "${IMAGE_NAME}"
 docker rmi "${IMAGE_ALIAS}"
+
+# Sleep FFS
+sleep 10
