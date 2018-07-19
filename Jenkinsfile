@@ -6,14 +6,14 @@ pipeline {
     IMAGE_ALIAS="${DOCKER_REGISTRY}/psc/acme-banking:latest"
   }
   stages {
-    stage('ESLint'){
-        steps{
-            sh '/bin/sh -x ${WORKSPACE}/bin/eslint.sh'
-        }
-    }
     stage('Build'){
         steps{
             sh '/bin/sh -x ${WORKSPACE}/bin/npm.sh'
+        }
+    }
+    stage('ESLint'){
+        steps{
+            sh '/bin/sh -x ${WORKSPACE}/bin/eslint.sh'
         }
     }
     stage('Docker Image'){
