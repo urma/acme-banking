@@ -8,7 +8,7 @@
 [ -z "${IMAGE_ALIAS}" ] && echo 'IMAGE_ALIAS is not defined.' && exit
 
 # Creating docker image
-docker build --no-cache -t "${IMAGE_NAME}" "${WORKSPACE}"
+docker build --no-cache --build-arg=token=${AQUA_TOKEN} -t "${IMAGE_NAME}" "${WORKSPACE}"
 docker tag "${IMAGE_NAME}" "${IMAGE_ALIAS}"
             
 docker push "${IMAGE_NAME}"
