@@ -33,5 +33,12 @@ pipeline {
             sh '/bin/sh -x ${WORKSPACE}/bin/zapscan.sh'
         }
     }
+    stage('Threadfix Result'){
+        steps{
+            withCredentials([string(credentialsId: 'THREADFIX_API_KEY', variable: 'THREADFIX_API_KEY')]) {
+                sh '/bin/sh -x ${WORKSPACE}/bin/threadfix.sh'
+            }
+        }
+    }
   }
 }
