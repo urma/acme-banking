@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "precommit": "eslint $(pwd) && git-secrets --scan $(pwd)"
+    "precommit": "eslint $(pwd) && git-secrets --scan $(pwd)",
+    "test": "echo No tests yet && exit 0"
   },
   "dependencies": {
     "ajv": "^6.2.0",

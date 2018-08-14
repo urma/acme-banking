@@ -1,10 +1,33 @@
+language: node_js
+node_js:
+  - "lts/*"
+
 dist: trusty
 sudo: required
-addons:
+
+before_install:
+  - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+
+    env:
+    global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "AHcCvM8hxHKmQu+LQnM1a83J3bAwLgjZ2I/zKeVjlRKn6cdEIZIlAZyDT+id3p7H+a4kA0I5nfJGtiDxGiyGI4z/NprtVkYJIsJQkbXcrVjMCVQqmUX7gepcRi6VAHECYsLIZiO41oBdFwzdFzy2f6uHpzuwiR/JxVcSknZT1uXqoDailQVVxn9uhWauaZDyZ9Ap4pKFHFarpKJ7mUUx3DztkMKg+IUD6322ac3OAVLbkziKs4Zt1/C9jOAEYHy1u5QpOTbKoKefY/0KlFZ0ajyvw7lLY318lRMm9B60JYMsCtP/2EH5h/MQuuyiVUzO3gmvW15dIul6+GO/0K5tNqhbCB5mPH+6Cj+jhe24i2GyrUH1CVS5lj+tGWvRzMnjiOfpbGRz3TUZdyL02VTnI18CeYC+ZIRu55Pdk1NOyFJggHzswtHZ3FxDamUVsZMkt1NEEDKVRRAr0KMyEsOVV/mjMKRfrOpCj/htc9VOIM0RzpSZZjpiNfGxgngAWj6j4uW1HdAsV/kw5le21+4ZOTff2DRzC274BJVVwtDSdpowPvOUQpd5aoUhKuqp90rafjM5NPc7R8BMHIejRY9DqNNdx+AqiCcLqGaAsqdOY+0Li9lrzOIiBJhe/yLEJo96lJVssESy/CWvNEyvDLK9tG3UM+L1Yfttb1JvY+CQHZk="
+
+   addons:
   sonarcloud:
     organization: urma-github
     token:
       secure: o7kVQSqcWqF4L7oiIr+B0i/4vIxNWv6egUd3FRvBWowCqXjPB/u5j9OmOp1sOWYLtyLum6Dmy37bEwm2sN4dWi4euwEpPcDGlCTEYtaDWiHmgBjgSQfQP2DUclaqdYLb0q19cXMScOw1w6XRZSOWye+frNNEHL+17RKMQABRk9YCi9rJZ2gOTgCMaHVLgLmt0mjFd5ox0ELYsqK0BzWrLB0aklM/mVN1x1vE0ycdTiZfwB0DhHW4kXPXF+afBBSCQ3xZg7al6zTrq6b+b8Qrg3DH27JoLh8X490ptJQoFblpKhT0UBSC6M8gl1YVYaBS8Qag94vpVEskt+YiHtJYCJJiCZj0K5M8L2sRaOsJPcZEpV7iaeMkMtTuWbiL+1gspyXbNLme5y8/998B8Fl4VagNL64GUHAIqkK83H4L7jb7JNIXbe6iZhFZep0lgBTXjFD2jvv0IxTZEtgBK4vv2ZVIrSQLXYvH/cdWPSx1hKVbA6Mmcxt0Bq2ZL7/XMHnhzuz9GVhdBHVCINXDiOB+Yujqvs/G6e/pCPUOpUoYS5JDmhvvLGRs/qbvv4K24oXEpVZ2xi9A6ZVfLw6EYATmMvLUseMLIhpVE1QSQN/Uf/VFa2LWsCqbYgpbSlp/T329Ei8ivHwRePy6SBo/2ZC+lGTUOVBZUuVO4DdwYsi6sWE=
+  coverity_scan:
+    project:
+      name: "urma/acme-banking"
+      description: "<Your project description here>"
+    notification_email: ulisses.montenegro@gmail.com
+    build_command_prepend: "<Your build preprocessing command here>"
+    build_command: "<Your build command here>"
+    branch_pattern: coverity_scan
+
 jdk:
 - oraclejdk8
 script:
@@ -12,6 +35,8 @@ script:
 cache:
   directories:
   - "$HOME/.sonar/cache"
+
 notifications:
   slack:
     secure: lqD40bH5Z0SEhOvYjdIRcwF2VvQp/qs57us0ApJqi32qXJcmm0snD7z+tv1pwFeZ0qE6pvK+cO1YZH7tSrBppdpKVX72NwqYIPL6Lrh14QkUaTb+XZdJJlohfqUt7INP6JTAdf857JQijPFjYqsED71GxgvZODsJPnRTE6vYGHotzYx97M9pk8zrkH1tkzbaupZ237fUIldti7WDM7RLZ/YpqxR1hsqEZU03GEa2kMXEkP7iMi+IgS8vIMvhe0L6UroCis5oGkN6ngVms1WeX0my0FwOScotgdIViE2eRsrSxRL4YVbdQc47MeyWvi1t+61FoB6FJIPTIr45oZZiCxhmwcvvUCdtmM1Ph9RoX1Lq6oWqjwwn+fAj84vsWVYM9FR9E6DcTuO8mHDIT+m7Y6a6n4YwNOBrVxIruRBYf9/v07bGSKfLjO+cbeSuIMEyHDHo2Psago/HdEb2lxCkQHoXwPVfnUFIsfkWmVrFNjsHjJc7cvosun9sFmXG58h4+AScyPtqNJJxgMK9ZTOm4UKCvisGwFIDy/OxdQZMPyW2z2SbldwCKiuQobudFT2U/SctVN3qZEblpHHJTKQdTI6kCnU4Aon8GMR//e9OHQQ1Gp9NCtp3ZtwgYuYXD1c1A3t7CsV/osNGVglchlith828QjjN5LxN0KKxPmV3Gfk=
+
