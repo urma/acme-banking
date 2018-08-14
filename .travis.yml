@@ -24,7 +24,7 @@ addons:
       name: "urma/acme-banking"
       description: "ACME Banking web application for demonstration purposes"
     notification_email: ulisses.montenegro@gmail.com
-    build_command_prepend: ""
+    build_command_prepend: "npm install"
     build_command: "npm install"
     branch_pattern: master
 
