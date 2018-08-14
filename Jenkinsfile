@@ -18,7 +18,7 @@ pipeline {
     }
     stage('Docker Image'){
         steps{
-            withCredentials([string(credentialsId: 'AQUA_TOKEN', variable: '')]) {
+            withCredentials([string(credentialsId: 'AQUA_TOKEN', variable: 'AQUA_TOKEN')]) {
                 sh '/bin/sh -x ${WORKSPACE}/bin/dockerimage.sh'
             }
         }
