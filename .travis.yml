@@ -6,13 +6,13 @@ dist: trusty
 sudo: required
 
 before_install:
-  - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-certificates.crt
+  - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-certificates.crt
 
 env:
   global:
   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
   #   via the "travis encrypt" command using the project repo's public key
-  - secure: "AHcCvM8hxHKmQu+LQnM1a83J3bAwLgjZ2I/zKeVjlRKn6cdEIZIlAZyDT+id3p7H+a4kA0I5nfJGtiDxGiyGI4z/NprtVkYJIsJQkbXcrVjMCVQqmUX7gepcRi6VAHECYsLIZiO41oBdFwzdFzy2f6uHpzuwiR/JxVcSknZT1uXqoDailQVVxn9uhWauaZDyZ9Ap4pKFHFarpKJ7mUUx3DztkMKg+IUD6322ac3OAVLbkziKs4Zt1/C9jOAEYHy1u5QpOTbKoKefY/0KlFZ0ajyvw7lLY318lRMm9B60JYMsCtP/2EH5h/MQuuyiVUzO3gmvW15dIul6+GO/0K5tNqhbCB5mPH+6Cj+jhe24i2GyrUH1CVS5lj+tGWvRzMnjiOfpbGRz3TUZdyL02VTnI18CeYC+ZIRu55Pdk1NOyFJggHzswtHZ3FxDamUVsZMkt1NEEDKVRRAr0KMyEsOVV/mjMKRfrOpCj/htc9VOIM0RzpSZZjpiNfGxgngAWj6j4uW1HdAsV/kw5le21+4ZOTff2DRzC274BJVVwtDSdpowPvOUQpd5aoUhKuqp90rafjM5NPc7R8BMHIejRY9DqNNdx+AqiCcLqGaAsqdOY+0Li9lrzOIiBJhe/yLEJo96lJVssESy/CWvNEyvDLK9tG3UM+L1Yfttb1JvY+CQHZk="
+  - secure: "D0k6EnZebjkoXrFbj+dP+syX7C+db24uwUaPXqXzSCFVgKAEjxXI4U6zRdVfWwgOi96bdX/wfrjxoRNCctk5myxiUcN80Wt0m3voyA1Dn99TZxjaIp/KZ4XZdA1oOeNrWkaZNNsDBW3AGdPddEBKfbUegcRXCjRBToCRiV5kwQbIHbHKOU14KX4MGSv45tW2Dg5XVdD9EujzcOCGrRtpjYhLawFtDvcUrRkxRTInhUeUq+qEV98CNER3K7eFCmr7/40h4S5SIpquBlE3E2MFyLDDM9r5eISCFLfhsaGbgK7wLlaaLpWHxVqbG3edX8mDPoHuJJk4aG5XI+47PgOoSvNl0Quz0c1+ve25GXHYwKd/RX0/dzNK9Q+IW7mhvzqIjD+ceoj2U83cNXwwc5UplCw533hKQE5sGAtVFpkL787vRsDF6HbPe4M9/WSrnjIrhrK8buep/IWSkkYGFv/8hGUA9e+cF6LhZHqjPuEal70LOWkf+s51uE7Bqz6NmPMBJVcC//bqvnKdeuncpoFj7TEV4c10B87QtIqi9bm42HpMffVjUSE9OoDKuBxHmSvHV5sYN4vMwxzdUALRVjPSpcsbJTHHi/NoT0YXXFyDSDoHxG2dqW4Yb5irWRetlQIuAVyWhuDKrhnm4Z8jDD7A8LZAiQGVhivZuVsuoav3U7o="
 
 addons:
   sonarcloud:
