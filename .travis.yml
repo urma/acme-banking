@@ -8,13 +8,13 @@ sudo: required
 before_install:
   - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-certificates.crt'
 
-    env:
-    global:
-   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
-   #   via the "travis encrypt" command using the project repo's public key
-   - secure: "AHcCvM8hxHKmQu+LQnM1a83J3bAwLgjZ2I/zKeVjlRKn6cdEIZIlAZyDT+id3p7H+a4kA0I5nfJGtiDxGiyGI4z/NprtVkYJIsJQkbXcrVjMCVQqmUX7gepcRi6VAHECYsLIZiO41oBdFwzdFzy2f6uHpzuwiR/JxVcSknZT1uXqoDailQVVxn9uhWauaZDyZ9Ap4pKFHFarpKJ7mUUx3DztkMKg+IUD6322ac3OAVLbkziKs4Zt1/C9jOAEYHy1u5QpOTbKoKefY/0KlFZ0ajyvw7lLY318lRMm9B60JYMsCtP/2EH5h/MQuuyiVUzO3gmvW15dIul6+GO/0K5tNqhbCB5mPH+6Cj+jhe24i2GyrUH1CVS5lj+tGWvRzMnjiOfpbGRz3TUZdyL02VTnI18CeYC+ZIRu55Pdk1NOyFJggHzswtHZ3FxDamUVsZMkt1NEEDKVRRAr0KMyEsOVV/mjMKRfrOpCj/htc9VOIM0RzpSZZjpiNfGxgngAWj6j4uW1HdAsV/kw5le21+4ZOTff2DRzC274BJVVwtDSdpowPvOUQpd5aoUhKuqp90rafjM5NPc7R8BMHIejRY9DqNNdx+AqiCcLqGaAsqdOY+0Li9lrzOIiBJhe/yLEJo96lJVssESy/CWvNEyvDLK9tG3UM+L1Yfttb1JvY+CQHZk="
+env:
+  global:
+  # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+  #   via the "travis encrypt" command using the project repo's public key
+  - secure: "AHcCvM8hxHKmQu+LQnM1a83J3bAwLgjZ2I/zKeVjlRKn6cdEIZIlAZyDT+id3p7H+a4kA0I5nfJGtiDxGiyGI4z/NprtVkYJIsJQkbXcrVjMCVQqmUX7gepcRi6VAHECYsLIZiO41oBdFwzdFzy2f6uHpzuwiR/JxVcSknZT1uXqoDailQVVxn9uhWauaZDyZ9Ap4pKFHFarpKJ7mUUx3DztkMKg+IUD6322ac3OAVLbkziKs4Zt1/C9jOAEYHy1u5QpOTbKoKefY/0KlFZ0ajyvw7lLY318lRMm9B60JYMsCtP/2EH5h/MQuuyiVUzO3gmvW15dIul6+GO/0K5tNqhbCB5mPH+6Cj+jhe24i2GyrUH1CVS5lj+tGWvRzMnjiOfpbGRz3TUZdyL02VTnI18CeYC+ZIRu55Pdk1NOyFJggHzswtHZ3FxDamUVsZMkt1NEEDKVRRAr0KMyEsOVV/mjMKRfrOpCj/htc9VOIM0RzpSZZjpiNfGxgngAWj6j4uW1HdAsV/kw5le21+4ZOTff2DRzC274BJVVwtDSdpowPvOUQpd5aoUhKuqp90rafjM5NPc7R8BMHIejRY9DqNNdx+AqiCcLqGaAsqdOY+0Li9lrzOIiBJhe/yLEJo96lJVssESy/CWvNEyvDLK9tG3UM+L1Yfttb1JvY+CQHZk="
 
-   addons:
+addons:
   sonarcloud:
     organization: urma-github
     token:
