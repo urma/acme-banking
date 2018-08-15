@@ -46,9 +46,11 @@ app.use(function(req, res, next) {
 });
 
 // database abstraction via sequelize
+// eslint-disable-next-line security/detect-non-literal-require
 app.locals.db = require(path.resolve(__dirname, 'app/models'));
 
 // main router definition
+// eslint-disable-next-line security/detect-non-literal-require
 app.use('/', require(path.resolve(__dirname, 'app/routes')));
 
 // catch 404 and forward to error handler

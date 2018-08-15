@@ -4,6 +4,7 @@
 const getopt = require('node-getopt');
 const path = require('path');
 
+// eslint-disable-next-line security/detect-non-literal-require
 const models = require(path.resolve(__dirname, '../app/models'));
 
 const args = getopt.create([

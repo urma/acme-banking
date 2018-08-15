@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 const path = require('path');
 
+// eslint-disable-next-line security/detect-non-literal-require
 const db = require(path.resolve(__dirname, '../models'));
 
 module.exports = {
