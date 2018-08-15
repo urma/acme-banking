@@ -22,7 +22,7 @@ app.use(express_winston.logger({
   
 // view engine setup
 app.set('views', path.resolve(__dirname, 'app/views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 // uncomment after placing your favicon in /public
 app.use(favicon(path.resolve(__dirname, 'app/public', 'favicon.ico')));
