@@ -5,8 +5,9 @@ const child_process = require('child_process');
 const fs = require('fs');
 const util = require('util');
 
-const promiseExecFile = util.promisify(child_process.execFile);
+// eslint-disable-next-line security/detect-non-literal-fs-filename
 const promiseReadFile = util.promisify(fs.readFile);
+const promiseExecFile = util.promisify(child_process.execFile);
 
 const execOptions = {
   maxBuffer: 4194304, /* maximum 4M of output buffered */

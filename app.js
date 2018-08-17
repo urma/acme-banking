@@ -22,7 +22,7 @@ app.use(express_winston.logger({
   
 // view engine setup
 app.set('views', path.resolve(__dirname, 'app/views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 // uncomment after placing your favicon in /public
 app.use(favicon(path.resolve(__dirname, 'app/public', 'favicon.ico')));
@@ -46,9 +46,11 @@ app.use(function(req, res, next) {
 });
 
 // database abstraction via sequelize
+// eslint-disable-next-line security/detect-non-literal-require
 app.locals.db = require(path.resolve(__dirname, 'app/models'));
 
 // main router definition
+// eslint-disable-next-line security/detect-non-literal-require
 app.use('/', require(path.resolve(__dirname, 'app/routes')));
 
 // catch 404 and forward to error handler
@@ -68,8 +70,6 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
-
-  eval('console.log("' + process.env.PATH + '");');
 });
 
 module.exports = app;

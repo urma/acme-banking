@@ -3,6 +3,7 @@ const path = require('path');
 
 const router = express.Router();
 
+// eslint-disable-next-line security/detect-non-literal-require
 const helpers = require(path.resolve(__dirname, '../helpers'));
 
 /* GET home page. */
