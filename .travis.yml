@@ -1,18 +1,16 @@
+dist: trusty
+sudo: required
+
 language: node_js
 node_js:
   - "lts/*"
 
-dist: trusty
-sudo: required
-
 before_install:
-  - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-certificates.crt
+  - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 
 env:
   global:
-  # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
-  #   via the "travis encrypt" command using the project repo's public key
-  - secure: "D0k6EnZebjkoXrFbj+dP+syX7C+db24uwUaPXqXzSCFVgKAEjxXI4U6zRdVfWwgOi96bdX/wfrjxoRNCctk5myxiUcN80Wt0m3voyA1Dn99TZxjaIp/KZ4XZdA1oOeNrWkaZNNsDBW3AGdPddEBKfbUegcRXCjRBToCRiV5kwQbIHbHKOU14KX4MGSv45tW2Dg5XVdD9EujzcOCGrRtpjYhLawFtDvcUrRkxRTInhUeUq+qEV98CNER3K7eFCmr7/40h4S5SIpquBlE3E2MFyLDDM9r5eISCFLfhsaGbgK7wLlaaLpWHxVqbG3edX8mDPoHuJJk4aG5XI+47PgOoSvNl0Quz0c1+ve25GXHYwKd/RX0/dzNK9Q+IW7mhvzqIjD+ceoj2U83cNXwwc5UplCw533hKQE5sGAtVFpkL787vRsDF6HbPe4M9/WSrnjIrhrK8buep/IWSkkYGFv/8hGUA9e+cF6LhZHqjPuEal70LOWkf+s51uE7Bqz6NmPMBJVcC//bqvnKdeuncpoFj7TEV4c10B87QtIqi9bm42HpMffVjUSE9OoDKuBxHmSvHV5sYN4vMwxzdUALRVjPSpcsbJTHHi/NoT0YXXFyDSDoHxG2dqW4Yb5irWRetlQIuAVyWhuDKrhnm4Z8jDD7A8LZAiQGVhivZuVsuoav3U7o="
+    - secure: "D0k6EnZebjkoXrFbj+dP+syX7C+db24uwUaPXqXzSCFVgKAEjxXI4U6zRdVfWwgOi96bdX/wfrjxoRNCctk5myxiUcN80Wt0m3voyA1Dn99TZxjaIp/KZ4XZdA1oOeNrWkaZNNsDBW3AGdPddEBKfbUegcRXCjRBToCRiV5kwQbIHbHKOU14KX4MGSv45tW2Dg5XVdD9EujzcOCGrRtpjYhLawFtDvcUrRkxRTInhUeUq+qEV98CNER3K7eFCmr7/40h4S5SIpquBlE3E2MFyLDDM9r5eISCFLfhsaGbgK7wLlaaLpWHxVqbG3edX8mDPoHuJJk4aG5XI+47PgOoSvNl0Quz0c1+ve25GXHYwKd/RX0/dzNK9Q+IW7mhvzqIjD+ceoj2U83cNXwwc5UplCw533hKQE5sGAtVFpkL787vRsDF6HbPe4M9/WSrnjIrhrK8buep/IWSkkYGFv/8hGUA9e+cF6LhZHqjPuEal70LOWkf+s51uE7Bqz6NmPMBJVcC//bqvnKdeuncpoFj7TEV4c10B87QtIqi9bm42HpMffVjUSE9OoDKuBxHmSvHV5sYN4vMwxzdUALRVjPSpcsbJTHHi/NoT0YXXFyDSDoHxG2dqW4Yb5irWRetlQIuAVyWhuDKrhnm4Z8jDD7A8LZAiQGVhivZuVsuoav3U7o="
 
 addons:
   sonarcloud:
@@ -23,9 +21,8 @@ addons:
     project:
       name: "urma/acme-banking"
       description: "ACME Banking web application for demonstration purposes"
-    notification_email: ulisses.montenegro@gmail.com
-    build_command_prepend: "npm install"
-    build_command: "npm install"
+    build_command_prepend: ""
+    build_command: ""
     branch_pattern: master
 
 jdk:
