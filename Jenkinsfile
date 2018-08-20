@@ -11,6 +11,11 @@ pipeline {
             sh '/bin/sh -x ${WORKSPACE}/bin/npm.sh'
         }
     }
+    stage('OWASP Dependency Check'){
+        steps{
+            sh '/bin/sh -x ${WORKSPACE}/bin/dependencycheck.sh'
+        }
+    }
     stage('ESLint'){
         steps{
             sh '/bin/sh -x ${WORKSPACE}/bin/eslint.sh'
