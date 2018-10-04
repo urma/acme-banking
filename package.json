@@ -4,6 +4,7 @@
   "repository": {
     "git": "git@github.com:urma/acme-banking.git"
   },
+  "license": "GPL-3.0-or-later",
   "scripts": {
     "start": "node ./bin/www",
     "precommit": "eslint $(pwd)",
