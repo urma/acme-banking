@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const express = require('express');
 const express_winston = require('express-winston');
 const favicon = require('serve-favicon');
+const helmet = require('helmet');
 const path = require('path');
 const session = require('express-session');
 const winston = require('winston');
@@ -19,6 +20,9 @@ app.use(express_winston.logger({
   winstonInstance: app.locals.logger,
   colorize: true,
 }));
+
+// helmet security headers
+app.use(helmet());
   
 // view engine setup
 app.set('views', path.resolve(__dirname, 'app/views'));
