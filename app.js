@@ -36,7 +36,7 @@ app.use(express.static(path.resolve(__dirname, 'app/public')));
 
 // setup session middleware
 app.use(session({
-  secret: crypto.randomBytes(72).toString('base64'),
+  secret: crypto.randomBytes(96).toString('base64'),
   resave: false,
   saveUninitialized: true,
 }));
