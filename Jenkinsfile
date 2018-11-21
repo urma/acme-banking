@@ -1,5 +1,5 @@
 pipeline {
-  agent any
+  agent { docker { image 'node:alpine' } }
   environment {
     /* Tag image using Docker registry and build tag */
     IMAGE_NAME="${DOCKER_REGISTRY}/psc/acme-banking:${BUILD_TAG}"
