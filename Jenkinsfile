@@ -8,42 +8,43 @@ pipeline {
   stages {
     stage('ESLint'){
       steps{
-        sh '/bin/sh -x ${WORKSPACE}/bin/eslint.sh'
+        sh 'npx eslint ${WORKSPACE}'
       }
     }
     stage('Build'){
       steps{
-        sh '/bin/sh -x ${WORKSPACE}/bin/npm.sh'
+        sh 'npm install'
       }
     }
     stage('Software Composition Analysis'){
       steps{
-        sh '/bin/sh -x ${WORKSPACE}/bin/sca.sh'
+        sh 'snyk test'
+        sh 'npm audit'
       }
     }
-    stage('Docker Image'){
-      steps{
-        withCredentials([string(credentialsId: 'AQUA_TOKEN', variable: 'AQUA_TOKEN')]) {
-          sh '/bin/sh -x ${WORKSPACE}/bin/dockerimage.sh'
-        }
-      }
-    }
-    stage('Docker Clean-up'){
-      steps{
-        sh '/bin/sh -x ${WORKSPACE}/bin/dockercleanup.sh'
-      }
-    }
-    stage ('Docker Deploy & Zap Scan'){
-      steps{
-        sh '/bin/sh -x ${WORKSPACE}/bin/zapscan.sh'
-      }
-    }
-    stage('Threadfix Result'){
-      steps{
-        withCredentials([string(credentialsId: 'THREADFIX_API_KEY', variable: 'THREADFIX_API_KEY')]) {
-          sh '/bin/sh -x ${WORKSPACE}/bin/threadfix.sh'
-        }
-      }
-    }
+    // stage('Docker Image'){
+    //   steps{
+    //     withCredentials([string(credentialsId: 'AQUA_TOKEN', variable: 'AQUA_TOKEN')]) {
+    //       sh '/bin/sh -x ${WORKSPACE}/bin/dockerimage.sh'
+    //     }
+    //   }
+    // }
+    // stage('Docker Clean-up'){
+    //   steps{
+    //     sh '/bin/sh -x ${WORKSPACE}/bin/dockercleanup.sh'
+    //   }
+    // }
+    // stage ('Docker Deploy & Zap Scan'){
+    //   steps{
+    //     sh '/bin/sh -x ${WORKSPACE}/bin/zapscan.sh'
+    //   }
+    // }
+    // stage('Threadfix Result'){
+    //   steps{
+    //     withCredentials([string(credentialsId: 'THREADFIX_API_KEY', variable: 'THREADFIX_API_KEY')]) {
+    //       sh '/bin/sh -x ${WORKSPACE}/bin/threadfix.sh'
+    //     }
+    //   }
+    // }
   }
 }
