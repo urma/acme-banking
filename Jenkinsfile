@@ -8,11 +8,11 @@ pipeline {
 
   stages {
     /* Scan source code for secrets before we inject any dependencies */
-    stage('Secret Management') {
-      steps {
-        sh 'docker run --rm --volume ${WORKSPACE}:/target hawkeyesec/scanner-cli'
-      }
-    }
+    // stage('Secret Management') {
+    //   steps {
+    //     sh 'docker run --rm --volume ${WORKSPACE}:/target hawkeyesec/scanner-cli'
+    //   }
+    // }
 
     /* Install dependencies -- node.js code does not require a real "buid" */
     stage('Build') {
