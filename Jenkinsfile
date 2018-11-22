@@ -43,7 +43,7 @@ pipeline {
           sh 'echo ${sonarqube_token}'
           sh '/opt/sonar-scanner-3.2.0.1227-linux/bin/sonar-scanner \
             -Dsonar.projectKey=acme-banking -Dsonar.sources=${WORKSPACE} \
-            -Dsonar.host.url=http://devsecops.local:9000/
+            -Dsonar.host.url=http://devsecops.local:9000/ \
             -Dsonar.login=${sonarqube_token}'
         }
       }
