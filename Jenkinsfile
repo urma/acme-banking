@@ -6,44 +6,44 @@ pipeline {
     IMAGE_ALIAS="${DOCKER_REGISTRY}/psc/acme-banking:latest"
   }
   stages {
-    stage('Build'){
-        steps{
-            sh '/bin/sh -x ${WORKSPACE}/bin/npm.sh'
-        }
-    }
-    stage('OWASP Dependency Check'){
-        steps{
-            sh '/bin/sh -x ${WORKSPACE}/bin/dependencycheck.sh'
-        }
-    }
     stage('ESLint'){
-        steps{
-            sh '/bin/sh -x ${WORKSPACE}/bin/eslint.sh'
-        }
+      steps{
+        sh '/bin/sh -x ${WORKSPACE}/bin/eslint.sh'
+      }
+    }
+    stage('Build'){
+      steps{
+        sh '/bin/sh -x ${WORKSPACE}/bin/npm.sh'
+      }
+    }
+    stage('Software Composition Analysis'){
+      steps{
+        sh '/bin/sh -x ${WORKSPACE}/bin/sca.sh'
+      }
     }
     stage('Docker Image'){
-        steps{
-            withCredentials([string(credentialsId: 'AQUA_TOKEN', variable: 'AQUA_TOKEN')]) {
-                sh '/bin/sh -x ${WORKSPACE}/bin/dockerimage.sh'
-            }
+      steps{
+        withCredentials([string(credentialsId: 'AQUA_TOKEN', variable: 'AQUA_TOKEN')]) {
+          sh '/bin/sh -x ${WORKSPACE}/bin/dockerimage.sh'
         }
+      }
     }
     stage('Docker Clean-up'){
-        steps{
-            sh '/bin/sh -x ${WORKSPACE}/bin/dockercleanup.sh'
-        }
+      steps{
+        sh '/bin/sh -x ${WORKSPACE}/bin/dockercleanup.sh'
+      }
     }
     stage ('Docker Deploy & Zap Scan'){
-        steps{
-            sh '/bin/sh -x ${WORKSPACE}/bin/zapscan.sh'
-        }
+      steps{
+        sh '/bin/sh -x ${WORKSPACE}/bin/zapscan.sh'
+      }
     }
     stage('Threadfix Result'){
-        steps{
-            withCredentials([string(credentialsId: 'THREADFIX_API_KEY', variable: 'THREADFIX_API_KEY')]) {
-                sh '/bin/sh -x ${WORKSPACE}/bin/threadfix.sh'
-            }
+      steps{
+        withCredentials([string(credentialsId: 'THREADFIX_API_KEY', variable: 'THREADFIX_API_KEY')]) {
+          sh '/bin/sh -x ${WORKSPACE}/bin/threadfix.sh'
         }
+      }
     }
   }
 }

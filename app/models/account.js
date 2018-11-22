@@ -9,6 +9,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       unique: true,
       allowNull: false,
+      // eslint-disable-next-line security/detect-unsafe-regex
       is: /^\d+(-\d+)+$/,
     },
     balance: {
