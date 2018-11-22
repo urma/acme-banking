@@ -6,14 +6,15 @@ pipeline {
     IMAGE_ALIAS="${DOCKER_REGISTRY}/psc/acme-banking:latest"
   }
   stages {
-    stage('ESLint'){
-      steps{
-        sh 'npx eslint ${WORKSPACE}'
-      }
-    }
     stage('Build'){
       steps{
         sh 'npm install'
+      }
+    }
+    /* ESlint is installed as a dependency, and thus must happen after build */
+    stage('ESLint'){
+      steps{
+        sh 'npx eslint ${WORKSPACE}'
       }
     }
     stage('Software Composition Analysis'){
