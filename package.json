@@ -11,7 +11,7 @@
     "test": "echo No tests yet && exit 0"
   },
   "dependencies": {
-    "config": "^1.30.0",
+    "config": "^1.31.0",
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "express-session": "^1.15.6",
