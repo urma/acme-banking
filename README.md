@@ -1,9 +1,6 @@
 # ACME Banking
 Trigger build
 [![snyk badge](https://snyk.io/test/github/urma/acme-banking/badge.svg)](https://snyk.io/test/github/urma/acme-banking)
-[![travis badge](https://travis-ci.org/urma/acme-banking.svg?branch=master)](https://travis-ci.org/urma/acme-banking)
-[![sonarcloud badge](https://sonarcloud.io/api/project_badges/measure?project=acme-banking&metric=alert_status)](https://sonarcloud.io/dashboard?id=acme-banking)
-[![coverity badge](https://scan.coverity.com/projects/16476/badge.svg)](https://scan.coverity.com/projects/urma-acme-banking)
 
 This application was developed to support application security
 training classes, and contains a number of vulnerabilities.
