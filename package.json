@@ -19,7 +19,7 @@
     "express-winston": "^2.6.0",
     "helmet": "^3.16.0",
     "lodash": "^4.17.11",
-    "mysql2": "^1.5.3",
+    "mysql2": "^1.6.5",
     "node-getopt": "^0.3.2",
     "pug": "^2.0.3",
     "sequelize": "^4.37.10",
