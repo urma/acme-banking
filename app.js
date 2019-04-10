@@ -1,3 +1,5 @@
+'use strict';
+
 const crypto = require('crypto');
 const express = require('express');
 const express_winston = require('express-winston');
