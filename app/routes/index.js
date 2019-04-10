@@ -1,7 +1,13 @@
+'use strict';
+
+const csurf = require('csurf');
 const express = require('express');
 const path = require('path');
 
 const router = express.Router();
+
+const csrfHandler =csurf({ cookie: false });
+router.use(csrfHandler);
 
 // eslint-disable-next-line security/detect-non-literal-require
 const helpers = require(path.resolve(__dirname, '../helpers'));
@@ -66,6 +72,7 @@ router.get('/deposit', function(req, res) {
     include: [{ model: req.app.locals.db.model('transaction') }],
   }).then((accounts) => {
     res.render('deposit', {
+      _csrf: req.csrfToken(),
       title: 'Deposit',
       accounts: accounts,
       user: req.session.user,
@@ -75,7 +82,7 @@ router.get('/deposit', function(req, res) {
   });
 });
 
-router.post('/deposit', function(req, res) {
+router.post('/deposit', csrfHandler, function(req, res) {
   req.app.locals.db.model('account').findOne({
     where: { _id: req.body.account },
     include: [{ model: req.app.locals.db.model('transaction') }],
@@ -101,6 +108,7 @@ router.get('/withdraw', function(req, res) {
     include: [{ model: req.app.locals.db.model('transaction') }],
   }).then((accounts) => {
     res.render('withdraw', {
+      _csrf: req.csrfToken(),
       title: 'Withdraw',
       accounts: accounts,
       user: req.session.user,
@@ -111,7 +119,7 @@ router.get('/withdraw', function(req, res) {
   });
 });
 
-router.post('/withdraw', function(req, res) {
+router.post('/withdraw', csrfHandler, function(req, res) {
   req.app.locals.db.model('account').findOne({
     where: { _id: req.body.account },
     include: [{ model: req.app.locals.db.model('transaction') }],
@@ -131,17 +139,21 @@ router.post('/withdraw', function(req, res) {
 
 /* login form */
 router.get('/login', function(req, res) {
-  res.render('login', { title: 'Log In' });
+  res.render('login', {
+    _csrf: req.csrfToken(),
+    title: 'Log In'
+  });
 });
 
 /* login submission */
-router.post('/login', function(req, res) {
+router.post('/login', csrfHandler, function(req, res) {
   helpers.auth.authenticate(req.body.email, req.body.password).then((user) => {
     req.session.user = user;
     return res.redirect('/');
   }).catch((err) => {
     delete(req.session.user);
     res.render('login', {
+      _csrf: req.csrfToken(),
       title: 'Log In',
       error: err,
     });
@@ -150,15 +162,17 @@ router.post('/login', function(req, res) {
 
 router.get('/account', function (req, res) {
   res.render('account', {
+    _csrf: req.csrfToken(),
     title: 'Account Settings',
     user: req.session.user,
   });
 });
 
-router.post('/account', function(req, res) {
+router.post('/account', csrfHandler, function(req, res) {
   helpers.auth.authenticate(req.session.user.email, req.body.current).then((user) => {
     if (req.body.new !== req.body.confirm) {
       return res.render('account', {
+        _csrf: req.csrfToken(),
         title: 'Account Settings',
         user: req.session.user,
         error: 'New password and confirmation do not match',
@@ -168,6 +182,7 @@ router.post('/account', function(req, res) {
     user.password = req.body.new;
     return user.save().then(() => {
       return res.render('account', {
+        _csrf: req.csrfToken(),
         title: 'Account Settings',
         user: req.session.user,
         success: 'Password was updated successfully',
@@ -181,6 +196,7 @@ router.post('/account', function(req, res) {
     });
   }).catch((err) => {
     return res.render('account', {
+      _csrf: req.csrfToken(),
       title: 'Account Settings',
       user: req.session.user,
       error: err,
