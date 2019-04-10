@@ -18,6 +18,7 @@ block content
     div(class='column')
       div(class='content')
         form(method='post')
+          input(type='hidden', name='_csrf', value=_csrf)
           div(class='field')
             label(class='label') Account
             div(class='select')

@@ -6,6 +6,7 @@ block content
       button(class='delete')
       | #{error}
   form(method='post')
+    input(type='hidden', name='_csrf', value=_csrf)
     div(class='field')
       label(class='label') Email
       p(class='control has-icons-left')
