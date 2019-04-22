@@ -1,26 +1,19 @@
-const crypto = require('crypto');
-const path = require('path');
-
 // eslint-disable-next-line security/detect-non-literal-require
-const db = require(path.resolve(__dirname, '../models'));
+const models = require('../models');
 
 module.exports = {
-  authenticate: function(email, password) {
-    return new Promise((resolve, reject) => {
-      db.model('user').findOne({ where: { email: email } }).then((user) => {
-        if (user && user.passwordSalt && user.passwordHash) {
-          const hash = crypto.createHash('sha512');
-          hash.update(password);
-          hash.update(user.passwordSalt);
-          if (user.passwordHash === hash.digest('hex')) {
-            return resolve(user);
-          }
-        }
+  authenticate: async (email, password) => {
+    const users = await models.User
+      .query()
+      .where('email', '=', email)
+      .where('enabled', '=', true)
+      .limit(1);
 
-        return reject('Invalid username and/or password');
-      }).catch((err) => {
-        return reject(err);
-      });
-    });
+    if (users.length > 0 && users[0].authenticate(password)) {
+      return users[0];
+    }
+    else {
+      throw new Error('Invalid username and/or password');
+    }
   },
 };

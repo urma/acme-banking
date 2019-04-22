@@ -6,139 +6,120 @@ const path = require('path');
 
 const router = express.Router();
 
-const csrfHandler =csurf({ cookie: false });
+const csrfHandler = csurf({ cookie: false });
 router.use(csrfHandler);
 
 // eslint-disable-next-line security/detect-non-literal-require
 const helpers = require(path.resolve(__dirname, '../helpers'));
 
+router.use(async (req, res, next) => {
+  if (req.session && req.session.user) {
+    res.locals.user = await req.app.locals.db.User
+      .query()
+      .findById(req.session.user.id);
+  }
+  return next();
+});
+
 /* GET home page. */
-router.get('/', function(req, res) {
+router.get('/', async (req, res) => {
   res.render('index', {
     title: 'Home',
-    user: req.session.user,
   });
 });
 
 /* Transaction handlers */
-router.get('/balance', function(req, res) {
-  req.app.locals.db.model('account').findAll({
-    where: { userId: req.session.user._id },
-    include: [{ model: req.app.locals.db.model('transaction') }],
-  }).then((accounts) => {
-    res.render('balance', {
-      title: 'Balance',
-      accounts: accounts,
-      user: req.session.user,
-    });
-  }).catch((err) => {
-    return res.status(400).send(err);
+router.get('/balance', async (req, res) => {
+  const accounts = await res.locals.user
+    .$relatedQuery('accounts')
+    .eager('transactions');
+
+  res.render('balance', {
+    title: 'Balance',
+    accounts: accounts,
   });
 });
 
-router.get('/history', function(req, res) {
-  req.app.locals.db.model('account').findAll({
-    where: { userId: req.session.user._id },
-    include: [{ model: req.app.locals.db.model('transaction') }],
-  }).then((accounts) => {
-    res.render('history', {
-      title: 'Transaction History',
-      accounts: accounts,
-      user: req.session.user,
-    });
-  }).catch((err) => {
-    return res.status(400).send(err);
+router.get('/history', async (req, res) => {
+  const accounts = await res.locals.user
+    .$relatedQuery('accounts')
+    .eager('transactions');
+
+  res.render('history', {
+    title: 'Transaction History',
+    accounts: accounts,
   });
 });
 
-router.get('/history/:accountId', function(req, res) {
-  req.app.locals.db.model('account').findOne({
-    where: { _id: req.params.accountId },
-    include: [{ model: req.app.locals.db.model('transaction') }],
-  }).then((account) => {
-    res.render('account_history', {
-      title: 'Transaction History',
-      account: account,
-      user: req.session.user,
-    });
-  }).catch((err) => {
-    return res.status(400).send(err);
+router.get('/history/:id', async (req, res) => {
+  const account = await res.locals.user
+    .$relatedQuery('accounts')
+    .findById(req.params.id)
+    .eager('transactions');
+
+  res.render('account_history', {
+    title: 'Transaction History',
+    account: account,
   });
 });
 
-router.get('/deposit', function(req, res) {
-  req.app.locals.db.model('account').findAll({
-    where: { userId: req.session.user._id },
-    include: [{ model: req.app.locals.db.model('transaction') }],
-  }).then((accounts) => {
-    res.render('deposit', {
-      _csrf: req.csrfToken(),
-      title: 'Deposit',
-      accounts: accounts,
-      user: req.session.user,
-    });
-  }).catch((err) => {
-    return res.status(400).send(err);
+router.get('/deposit', async (req, res) => {
+  const accounts = await res.locals.user
+    .$relatedQuery('accounts')
+    .eager('transactions');
+
+  res.render('deposit', {
+    _csrf: req.csrfToken(),
+    title: 'Deposit',
+    accounts: accounts,
   });
 });
 
-router.post('/deposit', csrfHandler, function(req, res) {
-  req.app.locals.db.model('account').findOne({
-    where: { _id: req.body.account },
-    include: [{ model: req.app.locals.db.model('transaction') }],
-  }).then((account) => {
-    req.app.locals.db.model('transaction').create({
-      accountId: account._id,
-      timestamp: new Date(),
-      operation: 'deposit',
-      amount: parseFloat(req.body.amount),
-    }).then(() => {
-      res.redirect('/balance');
-    }).catch((err) => {
-      return res.status(400).send(err);
-    });
-  }).catch((err) => {
-    return res.status(400).send(err);
+router.post('/deposit', csrfHandler, async (req, res) => {
+  const account = await res.locals.user
+    .$relatedQuery('accounts')
+    .findById(req.body.account)
+    .eager('transactions');
+  
+  account.$relatedQuery('transactions').insert({
+    timestamp: new Date(),
+    operation: 'deposit',
+    amount: parseFloat(req.body.amount),
+  }).then(() => {
+    return res.redirect('/balance');
   });
 });
 
-router.get('/withdraw', function(req, res) {
-  req.app.locals.db.model('account').findAll({
-    where: { userId: req.session.user._id },
-    include: [{ model: req.app.locals.db.model('transaction') }],
-  }).then((accounts) => {
-    res.render('withdraw', {
-      _csrf: req.csrfToken(),
-      title: 'Withdraw',
-      accounts: accounts,
-      user: req.session.user,
-      error: req.query.error,
-    });
-  }).catch((err) => {
-    return res.status(400).send(err);
+router.get('/withdraw', async (req, res) => {
+  const accounts = await res.locals.user
+    .$relatedQuery('accounts')
+    .eager('transactions');
+
+  res.render('withdraw', {
+    _csrf: req.csrfToken(),
+    title: 'Withdraw',
+    accounts: accounts,
+    error: req.query.error,
   });
 });
 
-router.post('/withdraw', csrfHandler, function(req, res) {
-  req.app.locals.db.model('account').findOne({
-    where: { _id: req.body.account },
-    include: [{ model: req.app.locals.db.model('transaction') }],
-  }).then((account) => {
-    req.app.locals.db.model('transaction').create({
-      accountId: account._id,
-      timestamp: new Date(),
-      operation: 'withdrawal',
-      amount: parseFloat(req.body.amount),
-    }).then(() => {
-      res.redirect('/balance');
-    }).catch((err) => {
-      return res.status(400).send(err);
-    });
+router.post('/withdraw', csrfHandler, async (req, res) => {
+  const account = await res.locals.user
+    .$relatedQuery('accounts')
+    .findById(req.body.account)
+    .eager('transactions');
+
+  account.$relatedQuery('transactions').insert({
+    timestamp: new Date(),
+    operation: 'withdrawal',
+    amount: parseFloat(req.body.amount),
+  }).then(() => {
+    res.redirect('/balance');
   });
 });
 
 /* login form */
-router.get('/login', function(req, res) {
+router.get('/login', async (req, res) => {
   res.render('login', {
     _csrf: req.csrfToken(),
     title: 'Log In'
@@ -146,7 +127,7 @@ router.get('/login', function(req, res) {
 });
 
 /* login submission */
-router.post('/login', csrfHandler, function(req, res) {
+router.post('/login', csrfHandler, async (req, res) => {
   helpers.auth.authenticate(req.body.email, req.body.password).then((user) => {
     req.session.user = user;
     return res.redirect('/');
@@ -160,51 +141,39 @@ router.post('/login', csrfHandler, function(req, res) {
   });
 });
 
-router.get('/account', function (req, res) {
+router.get('/account', async (req, res) => {
   res.render('account', {
     _csrf: req.csrfToken(),
     title: 'Account Settings',
-    user: req.session.user,
   });
 });
 
-router.post('/account', csrfHandler, function(req, res) {
-  helpers.auth.authenticate(req.session.user.email, req.body.current).then((user) => {
+router.post('/account', csrfHandler, async (req, res) => {
+  helpers.auth.authenticate(req.session.user.email, req.body.current).then(async (user) => {
     if (req.body.new !== req.body.confirm) {
       return res.render('account', {
         _csrf: req.csrfToken(),
         title: 'Account Settings',
-        user: req.session.user,
         error: 'New password and confirmation do not match',
       });
     }
 
-    user.password = req.body.new;
-    return user.save().then(() => {
-      return res.render('account', {
-        _csrf: req.csrfToken(),
-        title: 'Account Settings',
-        user: req.session.user,
-        success: 'Password was updated successfully',
+    const updatedUser = await req.app.locals.db.User
+      .query()
+      .patchAndFetchById(user.id, {
+        password: req.body.new
       });
-    }).catch((err) => {
-      return res.render('account', {
-        title: 'Account Settings',
-        user: req.session.user,
-        error: err,
-      });
-    });
-  }).catch((err) => {
+
     return res.render('account', {
       _csrf: req.csrfToken(),
       title: 'Account Settings',
-      user: req.session.user,
-      error: err,
+      success: 'Password was updated successfully',
+      user: updatedUser,
     });
   });
 });
 
-router.get('/logout', function(req, res) {
+router.get('/logout', async (req, res) => {
   delete(req.session.user);
   res.redirect('/');
 });
