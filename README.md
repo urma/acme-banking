@@ -15,14 +15,13 @@ by running:
 $ DEBUG=acme-banking:* npm start
 ```
 
-It requires access to a MySQL database. Database credentials can be configured
-using `node-config` by changing the various JSON files under `config/`, depending
-on the environment being used (`dev`, `test` or `production`). The parameters
-can also be provided via environment variables:
-* `DB_HOST` is the host running MySQL
-* `DB_INSTANCE` is the database instance in MySQL
-* `DB_USERNAME` is the database user for authentication
-* `DB_PASSWORD` is the database password for authentication
+It uses [Knex](https://knexjs.org/) and
+[Objection.js](https://vincit.github.io/objection.js/) for persistence.
+Database settings are configured via `knexfile.js`, which lives in the
+root directory for the application. The provided configuration file uses
+[SQLite](https://www.sqlite.org/index.html) to allow standalone operation.
+If usage of a database server is required, check out the documentation
+on [`knexfile.js`](https://knexjs.org/#knexfile).
 
 Once running the application can then the accessed through
 http://localhost:3000/
