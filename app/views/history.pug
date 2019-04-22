@@ -27,7 +27,7 @@ block content
             each account in accounts
               tr
                 td
-                  a(href='/history/' + account._id)= account.accountNumber
+                  a(href='/history/' + account.id)= account.accountNumber
                 td $ #{account.balance}
 
 block footer

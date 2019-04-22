@@ -1,8 +1,10 @@
 /* eslint no-console: 0 */
 'use strict';
 
+const _ = require('lodash');
 const getopt = require('node-getopt');
 const path = require('path');
+const util = require('util');
 
 // eslint-disable-next-line security/detect-non-literal-require
 const models = require(path.resolve(__dirname, '../app/models'));
@@ -18,41 +20,29 @@ if (!args.options.username || !args.options.email || !args.options.password) {
   process.exit(1);
 }
 
-models.sync({ force: true }).then((db) => {
-  /* Create user and accounts */
-  const userData = {
-    username: args.options.username,
-    email: args.options.email,
-    password: args.options.password,
-    accounts: Array.from({ length: 3 + Math.round(8 * Math.random()) }, () => {
-      return {
-        accountNumber: `${Math.round(1000 + 9000 * Math.random())}-${Math.round(0xffff * Math.random())}`,
-      };
-    }),
-  };
+models.User.query().insert({
+  username: args.options.username,
+  email: args.options.email,
+  password: args.options.password,
+  enabled: true,
+}).then(user => {
+  console.log(user);
 
-  db.model('user').create(userData, { include: [ db.model('account') ]}).then((user) => {
-    const transactions = user.accounts.map((account) => {
-      return Array.from({ length: 10 + Math.round(10 * Math.random()) }, () => {
-        return db.model('transaction').create({
-          accountId: account._id,
-          timestamp: new Date(Date.now() - Math.round(10000 + 10000000 * Math.random())),
-          amount: 1500 * Math.random(),
-          operation: [ 'deposit', 'withdrawal', 'payment' ][Math.floor(3 * Math.random())],
+  for (let accountIndex = 0; accountIndex < _.random(3, 6); accountIndex++) {
+    user.$relatedQuery('accounts').insert({
+      accountNumber: util.format('%i-%i', _.random(0, 9999), _.random(0, 999999)),
+    }).then(account => {
+      console.log(account);
+
+      for (let transactionIndex = 0; transactionIndex < _.random(10, 30); transactionIndex++) {
+        account.$relatedQuery('transactions').insert({
+          amount: _.random(50, 2000) / 100.0,
+          operation: _.shuffle(models.Transaction.transactionTypes)[0],
+          timestamp: new Date(),
+        }).then(transaction => {
+          console.log(transaction);
         });
-      });
-    }).reduce((state, list) => {
-      return state.concat(list);
-    }, []);
-
-    Promise.all(transactions).then(() => {
-      console.log('*** Database populated successfully ***');
-      db.close();
-    }).catch((err) => {
-      console.error('*** Error while populating database:', err);
-      db.close();
+      }
     });
-  }).catch((err) => {
-    console.error('Error while populating database', err);
-  });
+  }
 });

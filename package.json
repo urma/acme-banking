@@ -11,6 +11,7 @@
     "test": "echo No tests yet && exit 0"
   },
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "config": "^1.31.0",
     "csurf": "^1.9.0",
     "debug": "~2.6.9",
@@ -18,12 +19,14 @@
     "express-session": "^1.16.1",
     "express-winston": "^2.6.0",
     "helmet": "^3.16.0",
+    "knex": "^0.16.5",
     "lodash": "^4.17.11",
     "mysql2": "^1.6.5",
     "node-getopt": "^0.3.2",
+    "objection": "^1.6.8",
     "pug": "^2.0.3",
-    "sequelize": "^5.7.0",
     "serve-favicon": "~2.4.5",
+    "sqlite3": "^4.0.6",
     "winston": "^2.4.4"
   },
   "devDependencies": {
