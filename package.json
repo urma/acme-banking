@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
-    "config": "^1.31.0",
     "csurf": "^1.9.0",
     "debug": "~2.6.9",
     "express": "~4.16.4",
