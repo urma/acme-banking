@@ -27,8 +27,8 @@ block content
                 th Amount
             tbody
               each transaction in account.transactions
-                tr
-                  td= transaction.timestamp
+                tr(class=transaction.operation)
+                  td= moment(transaction.timestamp).fromNow()
                   td= transaction.operation
                   td= transaction.amount
         else

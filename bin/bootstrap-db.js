@@ -3,6 +3,7 @@
 
 const _ = require('lodash');
 const getopt = require('node-getopt');
+const moment = require('moment');
 const path = require('path');
 const util = require('util');
 
@@ -34,11 +35,12 @@ models.User.query().insert({
     }).then(account => {
       console.log(account);
 
+      const startingDate = moment().subtract(_.random(30, 90), 'days');
       for (let transactionIndex = 0; transactionIndex < _.random(10, 30); transactionIndex++) {
         account.$relatedQuery('transactions').insert({
           amount: _.random(50, 2000) / 100.0,
           operation: _.shuffle(models.Transaction.transactionTypes)[0],
-          timestamp: new Date(),
+          timestamp: startingDate.subtract(_.random(transactionIndex * 24, transactionIndex * 96), 'hours').toISOString(),
         }).then(transaction => {
           console.log(transaction);
         });
