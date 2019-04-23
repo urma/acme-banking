@@ -2,6 +2,7 @@
 
 const csurf = require('csurf');
 const express = require('express');
+const moment = require('moment');
 const path = require('path');
 
 const router = express.Router();
@@ -18,6 +19,7 @@ router.use(async (req, res, next) => {
       .query()
       .findById(req.session.user.id);
   }
+  res.locals.moment = moment;
   return next();
 });
 
@@ -82,7 +84,7 @@ router.post('/deposit', csrfHandler, async (req, res) => {
     .eager('transactions');
   
   account.$relatedQuery('transactions').insert({
-    timestamp: new Date(),
+    timestamp: new Date().toISOString(),
     operation: 'deposit',
     amount: parseFloat(req.body.amount),
   }).then(() => {
@@ -110,7 +112,7 @@ router.post('/withdraw', csrfHandler, async (req, res) => {
     .eager('transactions');
 
   account.$relatedQuery('transactions').insert({
-    timestamp: new Date(),
+    timestamp: new Date().toISOString(),
     operation: 'withdrawal',
     amount: parseFloat(req.body.amount),
   }).then(() => {
