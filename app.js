@@ -51,7 +51,6 @@ app.use(function(req, res, next) {
   return res.redirect('/login');
 });
 
-// database abstraction via sequelize
 // eslint-disable-next-line security/detect-non-literal-require
 app.locals.db = require(path.resolve(__dirname, 'app/models'));
 
