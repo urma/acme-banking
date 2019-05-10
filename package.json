@@ -26,7 +26,7 @@
     "objection": "^1.6.8",
     "pug": "^2.0.3",
     "serve-favicon": "~2.4.5",
-    "sqlite3": "^4.0.6",
+    "sqlite3": "^4.0.7",
     "winston": "^2.4.4"
   },
   "devDependencies": {
