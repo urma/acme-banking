@@ -9,7 +9,9 @@
     "migrate": "knex migrate:latest",
     "start": "knex migrate:latest && node ./bin/www",
     "precommit": "eslint $(pwd)",
-    "test": "echo No tests yet && exit 0"
+    "test": "echo No tests yet && exit 0",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
@@ -27,11 +29,13 @@
     "pug": "^2.0.3",
     "serve-favicon": "~2.4.5",
     "sqlite3": "^4.0.6",
-    "winston": "^2.4.4"
+    "winston": "^2.4.4",
+    "snyk": "^1.192.4"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
     "eslint-plugin-security": "^1.4.0",
     "husky": "^0.14.3"
-  }
+  },
+  "snyk": true
 }
