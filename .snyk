@@ -18,3 +18,5 @@ patch:
         patched: '2019-07-09T01:12:41.126Z'
     - pug > pug-code-gen > pug-attrs > constantinople > babel-types > lodash:
         patched: '2019-07-09T01:12:41.126Z'
+    - express-winston > lodash:
+        patched: '2019-07-14T23:45:50.568Z'
