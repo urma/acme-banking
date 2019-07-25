@@ -20,7 +20,7 @@
     "express": "~4.16.4",
     "express-session": "^1.16.2",
     "express-winston": "^2.6.0",
-    "helmet": "^3.18.0",
+    "helmet": "^3.20.0",
     "knex": "^0.16.5",
     "lodash": "^4.17.14",
     "moment": "^2.24.0",
