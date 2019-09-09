@@ -7,6 +7,7 @@ training classes, and contains a number of vulnerabilities.
 **Do not run it while exposed to public networks.**
 
 ## Instructions
+These are probably outdated.
 
 ### Set Up
 There is currently no administrative interface to the application,
