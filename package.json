@@ -23,14 +23,14 @@
     "helmet": "^3.18.0",
     "knex": "^0.19.5",
     "lodash": "^4.17.19",
-    "moment": "^2.24.0",
+    "moment": "^2.29.1",
     "node-getopt": "^0.3.2",
     "objection": "^1.6.9",
     "pug": "^2.0.4",
     "serve-favicon": "~2.4.5",
     "sqlite3": "^4.0.6",
     "winston": "^2.4.4",
-    "snyk": "^1.290.1"
+    "snyk": "^1.437.2"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
