@@ -22,7 +22,7 @@
     "express-winston": "^2.6.0",
     "helmet": "^3.18.0",
     "knex": "^0.19.5",
-    "lodash": "^4.17.17",
+    "lodash": "^4.17.19",
     "moment": "^2.24.0",
     "node-getopt": "^0.3.2",
     "objection": "^1.6.9",
