@@ -26,7 +26,7 @@
     "moment": "^2.29.1",
     "node-getopt": "^0.3.2",
     "objection": "^1.6.11",
-    "pug": "^2.0.4",
+    "pug": "^3.0.1",
     "serve-favicon": "~2.4.5",
     "sqlite3": "^4.2.0",
     "winston": "^2.4.4",
