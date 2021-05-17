@@ -1,6 +1,4 @@
 # ACME Banking
-Trigger build
-[![snyk badge](https://snyk.io/test/github/urma/acme-banking/badge.svg)](https://snyk.io/test/github/urma/acme-banking)
 
 This application was developed to support application security
 training classes, and contains a number of vulnerabilities.
