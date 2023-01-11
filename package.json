@@ -22,7 +22,7 @@
     "express-session": "^1.17.1",
     "express-winston": "^2.6.0",
     "helmet": "^3.23.3",
-    "knex": "^0.19.5",
+    "knex": "^2.4.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.2",
     "node-getopt": "^0.3.2",
